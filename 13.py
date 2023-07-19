@@ -117,4 +117,14 @@ except SyntaxError as e:
 
 print(code_output)
 
-#! 自动生成文件
+# 自动生成文件
+from pathlib import Path
+
+# 使用 Path 对象创建文件
+filename = "auto_unit_test.py"
+
+# 使用 Path.touch() 方法创建文件，如果文件不存在则会创建新文件
+path = Path(filename)
+path.touch()
+
+path.write_text(code_output)
