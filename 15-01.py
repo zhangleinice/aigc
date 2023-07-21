@@ -18,3 +18,8 @@ embeddings = OpenAIEmbeddings()
 docsearch = FAISS.from_documents(texts, embeddings)
 
 faq_chain = VectorDBQA.from_chain_type(llm=llm, vectorstore=docsearch, verbose=True)
+
+
+question = "请问你们的货，能送到三亚吗？大概需要几天？"
+result = faq_chain.run(question)
+print(result)

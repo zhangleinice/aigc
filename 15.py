@@ -2,8 +2,13 @@
 # 获取实时天气
 
 # 通过 RequestsChain 获取实时外部信息
+# TransformationChain
+
 
 from langchain.chains import LLMRequestsChain
+from langchain.prompts import PromptTemplate
+from langchain.llms import OpenAI
+from langchain.chains import LLMChain
 
 template = """在 >>> 和 <<< 直接是来自Google的原始搜索结果.
 请把对于问题 '{query}' 的答案从里面提取出来，如果里面没有相关信息的话就说 "找不到"
@@ -22,7 +27,7 @@ inputs = {
     "query": question,
     "url": "https://www.google.com/search?q=" + question.replace(" ", "+")
 }
-# result=requests_chain(inputs)
+result=requests_chain(inputs)
 # print(result)
 # print(result['output'])
 
@@ -31,35 +36,40 @@ inputs = {
 import re
 def parse_weather_info(weather_info: str) -> dict:
     # 将天气信息拆分成不同部分
-    parts = weather_info.split('; ')
+    parts = weather_info.split('. ')
 
     # 解析天气
     weather = parts[0].strip()
 
+    # 初始化温度范围和风向风力为空字符串
+    temperature_range = ""
+    wind_direction = ""
+    wind_force = ""
+
     # 解析温度范围，并提取最小和最大温度
-    temperature_range = parts[1].strip().replace('℃', '').split('～')
-    temperature_min = int(temperature_range[0])
-    temperature_max = int(temperature_range[1])
+    if len(parts) > 1:
+        temperature_range = parts[1].strip().replace('℃', '')
 
     # 解析风向和风力
-    wind_parts = parts[2].split(' ')
-    wind_direction = wind_parts[0].strip()
-    wind_force = wind_parts[1].strip()
+    if len(parts) > 2:
+        wind_parts = parts[2].split(' ')
+        if len(wind_parts) == 2:
+            wind_direction = wind_parts[0].strip()
+            wind_force = wind_parts[1].strip()
 
-    # 返回解析后的天气信息字典
+    # 返回解析后的天气信息字典，只包含存在的部分
     weather_dict = {
         'weather': weather,
-        'temperature_min': temperature_min,
-        'temperature_max': temperature_max,
+        'temperature_range': temperature_range,
         'wind_direction': wind_direction,
         'wind_force': wind_force
     }
 
     return weather_dict
 
-# 示例
-# weather_info = "小雨; 10℃～15℃; 东北风 风力4-5级"
-# weather_dict = parse_weather_info(weather_info)
+
+# weather_dict = parse_weather_info(' 中雨转小雨. 28/32℃')
+# weather_dict = parse_weather_info(result['output'])
 # print(weather_dict)
 
 # 通过 TransformationChain 转换数据格式
@@ -83,4 +93,4 @@ final_chain = SequentialChain(
 
 final_result = final_chain.run(inputs)
 
-# print(final_result)
+print(final_result)
