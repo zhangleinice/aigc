@@ -1,6 +1,7 @@
 # 使用python3安装
 # pip3 install spacy
 # python3 -m spacy download zh_core_web_sm
+# pip3 install faiss-cpu
 
 import openai, os
 from langchain.chat_models import ChatOpenAI
