@@ -1,7 +1,7 @@
 # print('hello world')
 
-# list = [1,2,3,4,5]
-# print(list[1:2])
+list = [1,2,3,4,5]
+print(list[1:2])
 
 
 # import spacy
