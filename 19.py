@@ -23,7 +23,7 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 
 from pydub import AudioSegment
 
-podcast = AudioSegment.from_mp3("./data/podcast_long.mp3")
+podcast = AudioSegment.from_mp3("./data/podcast_long.mp4")
 
 # PyDub handles time in milliseconds
 ten_minutes = 15 * 60 * 1000
