@@ -36,7 +36,7 @@ def draw_image_grids(images, rows, cols, file_name):
     plt.show()
 
 # 调用函数在网格中显示图片
-# draw_image_grids(images, 2, 2, "posture")
+draw_image_grids(images, 2, 2, "posture")
 
 
 
