@@ -119,7 +119,7 @@ memory = ConversationBufferMemory(memory_key="chat_history", return_messages=Tru
 # conversational-react-description： 支持多轮对话
 conversation_agent = initialize_agent(
     tools, 
-    chatllm, 
+    llm, 
     agent="conversational-react-description", 
     memory=memory, 
     verbose=True
@@ -154,9 +154,26 @@ conversation_agent = initialize_agent(
 # print(answer2)
 
 
-question3 = "你们的退货政策是怎么样的？"
+question3 = "你们的退货政策是怎么样的"
 answer3 = conversation_agent.run(question3)
 print(answer3)
+
+# > Entering new AgentExecutor chain...
+
+# Thought: Do I need to use a tool? Yes
+# Action: FAQ
+# Action Input: 退货政策
+
+# > Entering new VectorDBQA chain...
+
+# > Finished chain.
+
+# Observation:  自收到商品之日起7天内，如产品未使用、包装完好，您可以申请退货。某些特殊商品可能不支持退货，请在购买前查看商品详情页面的退货政策。
+# Thought: Do I need to use a tool? No
+# AI: 您好，感谢您的提问。我们的退货政策是，自收到商品之日起7天内，如产品未使用、包装完好，您可以申请退货。某些特殊商品可能不支持退货，请在购买前查看商品详情页面的退货政策。
+
+# > Finished chain.
+# 您好，感谢您的提问。我们的退货政策是，自收到商品之日起7天内，如产品未使用、包装完好，您可以申请退货。某些特殊商品可能不支持退货，请在购买前查看商品详情页面的退货政策。
 
 
 
